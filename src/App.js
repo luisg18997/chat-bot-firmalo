@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {Fragment, useEffect, useRef, useState} from 'react';
 import './bot.css'
 import './robot.css'
 import User from './assets/ninjaBot.png'
@@ -9,6 +9,8 @@ function App() {
   const [chatLogs, setChatLogs] = useState([])
   // opciones de preguntas
   const [buttons, setButtons] = useState([])
+  const [firstMsg, setFirstMsg] = useState(true)
+  const [loaded, setLoaded] = useState(true)
 
   //referencia para el scrolltop
   const msgRef = useRef();
@@ -49,6 +51,7 @@ const scrollToBottom = () => msgRef.current.scrollTop = msgRef.current.scrollHei
   //envio de pregunta
 const  onSendQuestion = async(e, option) => {
   e.preventDefault();
+  setLoaded(true)
   const bot = window.document.getElementsByClassName('chatbot-container')
   let msgUser = '', msgBot = '', myQuestionsData = [];
   //vacio las preguntas a realizar
@@ -155,46 +158,22 @@ const  onSendQuestion = async(e, option) => {
   // se almacena en el estado 
   setChatLogs(chats)
   const msgAvatar = window.document.getElementsByClassName('msg-avatar');
-  botTypingMsg()  
+  
   setTimeout(()  => {
     //envio la respues del bot
     chats.push({sender: 'bot', msg: msgBot});
+   //setFirstMsg(false)
+    setLoaded(false)
     setChatLogs(chats)
     // ingreso las opciones a seleccionar
-    msgAvatar[msgAvatar.length - 1].appendChild(bot[0]);
-    bot[0].style.top = '-8px'
+    console.log(bot)
+
+    console.log(msgAvatar[msgAvatar.length - 1].append(bot[bot.length -1]));
+    bot[bot.length -1].style.top = '-8px'
     setButtons(myQuestionsData)
     scrollToBottom();
   }, 3000)
 }
-
-  const botTypingMsg = () => {
-    window.document.querySelector(".chatbot-container .dot:nth-child(2)").style.animation = "pulse-mouth-hide 1s ease-in-out";
-    window.document.querySelector(".chatbot-container #antenna").style.animation = "antenna-disappear 1s ease-in-out";
-    window.document.querySelector(".chatbot-container #antenna").style.animationFillMode = "forwards";
-    window.document.querySelector(".chatbot-container #antenna #beam").style.animation = "beam-disappear 1s ease-in-out";
-    window.document.querySelector(".chatbot-container #antenna #beam-pulsar").style.visibility = "hidden";
-    setTimeout(function() { 
-      window.document.querySelector(".chatbot-container .dot:nth-child(1)").style.animation = "pulse-typing 3s infinite ease-in-out";
-      window.document.querySelector(".chatbot-container .dot:nth-child(2)").style.animation = "pulse-typing 3s infinite ease-in-out";
-      window.document.querySelector(".chatbot-container .dot:nth-child(2)").style.animationDelay = "0.2s";
-      window.document.querySelector(".chatbot-container .dot:nth-child(3)").style.animation = "pulse-typing 3s infinite ease-in-out";
-      window.document.querySelector(".chatbot-container .dot:nth-child(3)").style.animationDelay = "0.4s";
-    }, 1000);
-    setTimeout(function() { 
-      window.document.querySelector(".chatbot-container .dot:nth-child(1)").style.animation = "pulse-winking 5s infinite ease-in-out";
-      window.document.querySelector(".chatbot-container .dot:nth-child(2)").style.animation = "pulse-mouth-show 4s ease-in-out";
-      window.document.querySelector(".chatbot-container .dot:nth-child(2)").style.animationFillMode = "forwards";
-      window.document.querySelector(".chatbot-container .dot:nth-child(2)").style.animationDelay = "0s";
-      window.document.querySelector(".chatbot-container .dot:nth-child(3)").style.animation = "pulse-winking 5s infinite ease-in-out";
-      window.document.querySelector(".chatbot-container .dot:nth-child(3)").style.animationDelay = "0s";
-      window.document.querySelector(".chatbot-container #antenna").style.animation = "antenna-appear 1s ease-in-out";
-      window.document.querySelector(".chatbot-container #antenna").style.animationFillMode = "forwards";
-      window.document.querySelector(".chatbot-container #antenna #beam").style.animation = "beam-appear 1s ease-in-out";
-      window.document.querySelector(".chatbot-container #antenna #beam-pulsar").style.visibility = "visible";
-      window.document.querySelector(".chatbot-container #antenna #beam-pulsar").style.animation = "beam-pulsar 3s infinite ease-in-out";
-    }, 3000);
-  }
 
 
 
