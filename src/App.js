@@ -158,7 +158,7 @@ const  onSendQuestion = async(e, option) => {
   // se almacena en el estado 
   setChatLogs(chats)
   const msgAvatar = window.document.getElementsByClassName('msg-avatar');
-  
+  botTypingMsg()
   setTimeout(()  => {
     //envio la respues del bot
     chats.push({sender: 'bot', msg: msgBot});
@@ -175,6 +175,33 @@ const  onSendQuestion = async(e, option) => {
   }, 3000)
 }
 
+const botTypingMsg = () => {
+  window.document.querySelector(".chatbot-container .dot:nth-child(2)").style.animation = "pulse-mouth-hide 1s ease-in-out";
+  window.document.querySelector(".chatbot-container #antenna").style.animation = "antenna-disappear 1s ease-in-out";
+  window.document.querySelector(".chatbot-container #antenna").style.animationFillMode = "forwards";
+  window.document.querySelector(".chatbot-container #antenna #beam").style.animation = "beam-disappear 1s ease-in-out";
+  window.document.querySelector(".chatbot-container #antenna #beam-pulsar").style.visibility = "hidden";
+  setTimeout(function() { 
+    window.document.querySelector(".chatbot-container .dot:nth-child(1)").style.animation = "pulse-typing 3s infinite ease-in-out";
+    window.document.querySelector(".chatbot-container .dot:nth-child(2)").style.animation = "pulse-typing 3s infinite ease-in-out";
+    window.document.querySelector(".chatbot-container .dot:nth-child(2)").style.animationDelay = "0.2s";
+    window.document.querySelector(".chatbot-container .dot:nth-child(3)").style.animation = "pulse-typing 3s infinite ease-in-out";
+    window.document.querySelector(".chatbot-container .dot:nth-child(3)").style.animationDelay = "0.4s";
+  }, 1000);
+  setTimeout(function() { 
+    window.document.querySelector(".chatbot-container .dot:nth-child(1)").style.animation = "pulse-winking 5s infinite ease-in-out";
+    window.document.querySelector(".chatbot-container .dot:nth-child(2)").style.animation = "pulse-mouth-show 4s ease-in-out";
+    window.document.querySelector(".chatbot-container .dot:nth-child(2)").style.animationFillMode = "forwards";
+    window.document.querySelector(".chatbot-container .dot:nth-child(2)").style.animationDelay = "0s";
+    window.document.querySelector(".chatbot-container .dot:nth-child(3)").style.animation = "pulse-winking 5s infinite ease-in-out";
+    window.document.querySelector(".chatbot-container .dot:nth-child(3)").style.animationDelay = "0s";
+    window.document.querySelector(".chatbot-container #antenna").style.animation = "antenna-appear 1s ease-in-out";
+    window.document.querySelector(".chatbot-container #antenna").style.animationFillMode = "forwards";
+    window.document.querySelector(".chatbot-container #antenna #beam").style.animation = "beam-appear 1s ease-in-out";
+    window.document.querySelector(".chatbot-container #antenna #beam-pulsar").style.visibility = "visible";
+    window.document.querySelector(".chatbot-container #antenna #beam-pulsar").style.animation = "beam-pulsar 3s infinite ease-in-out";
+  }, 3000);
+}
 
 
   return (
