@@ -194,7 +194,7 @@
 }
 @keyframes pulse-winking {
     0% {
-     tranform: scale(1);
+     transform: scale(1);
      height: 5px;
   }
     8% {
@@ -204,7 +204,7 @@
      height: 12px;
   }
     25% {
-     tranform: scale(1);
+     transform: scale(1);
      height: 5px;
   }
     33% {
@@ -214,7 +214,7 @@
      height: 12px;
   }
     100% {
-     tranform: scale(1);
+     transform: scale(1);
      height: 5px;
   }
 }

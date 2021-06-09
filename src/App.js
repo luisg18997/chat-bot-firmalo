@@ -10,10 +10,10 @@ function App() {
   // opciones de preguntas
   const [buttons, setButtons] = useState([])
   const [firstMsg, setFirstMsg] = useState(true)
+  const [loaded, setLoaded] = useState(true)
 
   //referencia para el scrolltop
   const msgRef = useRef();
-  const botRef = useRef();
   //preguntas predeterminadas
   
   const preguntasFirmaSencilla = [{msg: "Que es una firma simple", data: 'question2-1', resBot: (<>Son firmas sencillitas. <br /><br /> Algo mas que te gustaria saber sobre las firmas simples</>)}, {msg: "Cuanto cuesta una firma simple", data: 'question2-2', resBot: (<>Los planes para las firmas sencillas comienzan en $9.99 conoce mas <a href="firmalo.io/planes" target="_blank">aqui</a>. <br/><br/> Algo mas que te gustaria saber sobre las firmas simples</>)}, {msg: "Requerimientos firma simple", data: 'question2-3', resBot: (<>Los requerimientos son sencillos. Sigue este enlace para saber mas <a href="firmalo.io/planes" target="_blank">pagina requerimientos</a>. <br/><br/> Algo mas que te gustaria saber sobre las firmas simples</>)}];
@@ -32,7 +32,7 @@ function App() {
     InitialChat();
   },[])
 
-  const Bot = (<div ref={botRef} className="chatbot-container">
+  const Bot = (<div className="chatbot-container">
   <div id="chatbot">
     <div className="dot"></div>
     <div className="dot"></div>
@@ -51,6 +51,8 @@ const scrollToBottom = () => msgRef.current.scrollTop = msgRef.current.scrollHei
   //envio de pregunta
 const  onSendQuestion = async(e, option) => {
   e.preventDefault();
+  setLoaded(true)
+  const bot = window.document.getElementsByClassName('chatbot-container')
   let msgUser = '', msgBot = '', myQuestionsData = [];
   //vacio las preguntas a realizar
   setButtons([]);
@@ -150,18 +152,24 @@ const  onSendQuestion = async(e, option) => {
   }
   let chats = [...chatLogs];
   //anexo la respuesta del usuario
-  console.log(botRef.current.style.top = "154px")
-  console.log(botRef)
   chats.push({sender: 'user', msg: msgUser});
+  bot[bot.length -1].style.top = "154px";
   
   // se almacena en el estado 
   setChatLogs(chats)
+  const msgAvatar = window.document.getElementsByClassName('msg-avatar');
+  
   setTimeout(()  => {
     //envio la respues del bot
     chats.push({sender: 'bot', msg: msgBot});
-    setFirstMsg(false)
+   //setFirstMsg(false)
+    setLoaded(false)
     setChatLogs(chats)
     // ingreso las opciones a seleccionar
+    console.log(bot)
+
+    console.log(msgAvatar[msgAvatar.length - 1].append(bot[bot.length -1]));
+    bot[bot.length -1].style.top = '-8px'
     setButtons(myQuestionsData)
     scrollToBottom();
   }, 3000)
@@ -179,21 +187,15 @@ const  onSendQuestion = async(e, option) => {
           <div className="chat-box-body">
             <div className="chat-box-overlay">   </div>
             <div className="chat-logs" ref={msgRef}>  
+            {Bot}
               {
+                
                 chatLogs.map((chat, id) => (
-                  <Fragment key={id}>
-                       {
-                         firstMsg &&
-                          Bot
-                       }
-                    <div className={`chat-msg ${chat.sender === "bot"? "self": "user"}`}>
+                    <div key={id} className={`chat-msg ${chat.sender === "bot"? "self": "user"}`}>
                       <span className='msg-avatar'>
                         {
-                          chat.sender === "user" ?
-                          <img src={User} alt="user"/>
-                          :
-                          id === chatLogs.length-1 && !firstMsg && Bot
-                          
+                          chat.sender === "user"  &&
+                          <img src={User} alt="user"/>                          
                         }
                       </span>
                       <div>
@@ -209,7 +211,6 @@ const  onSendQuestion = async(e, option) => {
                         }
                       </div>
                     </div>
-                  </Fragment>
                 ))
               }
             </div>
